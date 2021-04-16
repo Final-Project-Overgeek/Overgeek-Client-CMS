@@ -26,10 +26,13 @@ function App() {
             {/* detail */}
           </Route>
           <Route path='/add-lecturer'>
-            {/* Add */}
+            <AddLecturer></AddLecturer>
+          </Route>
+          <Route path='/login'>
+            <Login></Login>
           </Route>
           <Route path='/'>
-            {/* Home */}
+            <Home></Home>
           </Route>
         </Switch>
       </div>

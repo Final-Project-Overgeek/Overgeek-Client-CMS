@@ -1,5 +1,23 @@
-.App {
-  text-align: center;
+/* * {
+  background-image: url('https://wallpapercave.com/wp/wp2174011.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+} */
+
+.App {}
+
+#img-navbar {
+  height: 70px;
+  width: auto;
+}
+
+#img-login {
+  height: 20em;
+  width: auto;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #loading {
