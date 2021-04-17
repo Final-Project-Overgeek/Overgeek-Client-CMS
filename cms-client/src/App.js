@@ -16,23 +16,25 @@ import Navbar from './components/Navbar';
 function App() {
   return (
     <Router>
-      <Navbar></Navbar>
       <div className="App">
         <Switch>
           <Route path='/edit-lecturer/:id'>
-            {/* edit */}
+            <Navbar/>
+            <EditLecturer/>
           </Route>
           <Route path='/detail-lecturer/:id'>
             {/* detail */}
           </Route>
           <Route path='/add-lecturer'>
-            <AddLecturer></AddLecturer>
+            <Navbar/>
+            <AddLecturer/>
           </Route>
           <Route path='/login'>
-            <Login></Login>
+            <Login/>
           </Route>
           <Route path='/'>
-            <Home></Home>
+            <Navbar/>
+            <Home/>
           </Route>
         </Switch>
       </div>

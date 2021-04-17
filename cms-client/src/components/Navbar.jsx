@@ -10,6 +10,12 @@ export default function Navbar() {
     event.preventDefault();
     history.push('/' + destination);
   }
+
+  function logout(event) {
+    event.preventDefault();
+    localStorage.removeItem('access_token');
+    history.push('/login');
+  }
   return (
     <nav className="navbar navbar-expand-lg shadow navbar-dark bg-dark">
       <img src="https://i.imgur.com/i8CznWD.jpg" id='img-navbar' class="card-img-top rounded-circle" alt="logo" />
@@ -30,7 +36,7 @@ export default function Navbar() {
           </li>
         </ul>
         <div>
-          <button className="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
+          <button className="btn btn-outline-danger my-2 my-sm-0" type="submit" onClick={(event) => { logout(event) }}>Logout</button>
         </div>
       </div>
     </nav>

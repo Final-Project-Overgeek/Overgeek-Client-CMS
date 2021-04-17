@@ -1,0 +1,88 @@
+import axios from 'axios';
+
+export function setLecturers(payload) {
+  return { type: 'lecturers/setLecturers', payload };
+}
+
+export function setLecturersAsync({ url, setLoading }) {
+  return ((dispatch) => {
+    axios({
+      url: url,
+      method: 'GET',
+      headers: { access_token: localStorage.access_token }
+    })
+      .then(({ data }) => {
+        dispatch(setLecturers(data));
+        setLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  })
+}
+
+export function setLecturer(payload) {
+  return { type: 'lecturer/setLecturer', payload };
+}
+
+export function setLecturerAsync({ url, setLoading }) {
+  return ((dispatch) => {
+    axios({
+      url: url,
+      method: 'GET',
+      headers: { access_token: localStorage.access_token }
+    })
+      .then(({ data }) => {
+        dispatch(setLecturer(data));
+        setLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  })
+}
+
+export function addLecturerAsync({ url, history, payload }) {
+  axios({
+    url: url,
+    method: 'POST',
+    data: payload,
+    headers: { access_token: localStorage.access_token }
+  })
+    .then(({ data }) => {
+      history.push('/');
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}
+
+export function saveEditAsync({ url, setLoading, history, payload }) {
+  axios({
+    url: url,
+    method: 'PUT',
+    data: payload,
+    headers: { access_token: localStorage.access_token }
+  })
+    .then(({ data }) => {
+      history.push('/');
+      setLoading(false);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}
+
+export function deleteLecturerAsync(urlDel) {
+  axios({
+    url: urlDel,
+    method: 'DELETE',
+    headers: { access_token: localStorage.access_token }
+  })
+    .then(({ data }) => {
+      console.log(data)
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}

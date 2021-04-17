@@ -1,14 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { setLecturersAsync, deleteLecturerAsync } from '../store/actions/lecturerAction';
+import baseUrl from '../api'
+import Loading from '../components/Loading';
 
 export default function Home() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const lecturers = useSelector((state) => state.lecturerReducer.lecturers);
+  const url = baseUrl + '/lecturers';
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    dispatch(setLecturersAsync({ url, setLoading }))
+  }, []);
 
   function edit(params) {
     const { event, id } = params;
+
+    event.preventDefault();
+    history.push('/edit-lecturer/' + id);
   }
+
+  function deleteLecturer(params) {
+    const { event, id } = params;
+    let urlDel = baseUrl + '/lecturers/' + id;
+
+    event.preventDefault();
+    deleteLecturerAsync(urlDel);
+    dispatch(setLecturersAsync({ url, setLoading }));
+  }
+
   return (
     <div className='container'>
       <p className='h2 mt-3 mb-3 text-center'>Lecturer List</p>
@@ -25,91 +48,28 @@ export default function Home() {
             <th scope="col">Actions</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>10 pcs</td>
-            <td>
-              <a href="#" className='btn btn-primary mr-2'>Edit</a>
-              <a href="#" className='btn btn-danger'>Delete</a>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>3 pcs</td>
-            <td>
-              <a href="#" className='btn btn-primary mr-2'>Edit</a>
-              <a href="#" className='btn btn-danger'>Delete</a>
-            </td>
-          </tr>
-        </tbody>
+        {loading ? <Loading /> :
+          <tbody>
+            {lecturers.map((lecturer, i) => {
+              return (
+                <tr key={i}>
+                  <th scope="row">{i + 1}</th>
+                  <td>{lecturer.name}</td>
+                  <td>{lecturer.game}</td>
+                  <td>{lecturer.role}</td>
+                  <td>{lecturer.team}</td>
+                  <td>{lecturer.language}</td>
+                  <td>{lecturer.videos.length} pcs</td>
+                  <td>
+                    <a href="#" className='btn btn-primary mr-2' onClick={(event) => { edit({ event, id: lecturer.id }) }}>Edit</a>
+                    <a href="#" className='btn btn-danger' onClick={(event) => { deleteLecturer({ event, id: lecturer.id }) }}>Delete</a>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        }
       </table>
-
-
-      {/* <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col mb-3">
-          <div class="card h-100">
-            <img src="https://miro.medium.com/max/3760/1*OEnS6-DEn56szCwdOs2mrA.jpeg" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" className='btn btn-primary form-control'>Edit</a>
-              <a href="#" className='btn btn-danger form-control mt-2'>Delete</a>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-3">
-          <div class="card h-100">
-            <img src="https://miro.medium.com/max/3760/1*OEnS6-DEn56szCwdOs2mrA.jpeg" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">This is a short card.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" className='btn btn-primary form-control'>Edit</a>
-              <a href="#" className='btn btn-danger form-control mt-2'>Delete</a>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-3">
-          <div class="card h-100">
-            <img src="https://miro.medium.com/max/3760/1*OEnS6-DEn56szCwdOs2mrA.jpeg" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" className='btn btn-primary form-control'>Edit</a>
-              <a href="#" className='btn btn-danger form-control mt-2'>Delete</a>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-3">
-          <div class="card h-100">
-            <img src="https://miro.medium.com/max/3760/1*OEnS6-DEn56szCwdOs2mrA.jpeg" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" className='btn btn-primary form-control'>Edit</a>
-              <a href="#" className='btn btn-danger form-control mt-2'>Delete</a>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </div>
   )
 }
