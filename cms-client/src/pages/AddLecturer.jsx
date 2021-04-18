@@ -14,8 +14,6 @@ export default function AddLecturer() {
   const [language, setLanguage] = useState('');
   const [image, setImage] = useState('');
 
-  const [loading, setLoading] = useState(true);
-
   function getName(event) {
     setName(event.target.value);
   }
@@ -68,7 +66,13 @@ export default function AddLecturer() {
         </div>
         <div className="mb-3">
           <label for="add" className="form-label ml-2">Game</label>
-          <input type="text" className="form-control" id="add" onChange={getGame} />
+          <select required onChange={getGame} class="form-select form-control" aria-label="Default select example">
+            <option selected >-- Select Game --</option>
+            <option value="PlayerUnknown's Battlegrounds Mobile">PlayerUnknown's Battlegrounds Mobile</option>
+            <option value="League of Legends: Wild Rift">League of Legends: Wild Rift</option>
+            <option value="Free Fire Battlegrounds">Free Fire Battlegrounds</option>
+            <option value="Mobile Legends">Mobile Legends</option>
+          </select>
         </div>
         <div className="mb-3">
           <label for="add" className="form-label ml-2">Role</label>
