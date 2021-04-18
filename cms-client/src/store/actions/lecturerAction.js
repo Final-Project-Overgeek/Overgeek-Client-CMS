@@ -50,6 +50,7 @@ export function addLecturerAsync({ url, history, payload }) {
     headers: { access_token: localStorage.access_token }
   })
     .then(({ data }) => {
+      console.log(data)
       history.push('/');
     })
     .catch(err => {
@@ -65,6 +66,7 @@ export function saveEditAsync({ url, setLoading, history, payload }) {
     headers: { access_token: localStorage.access_token }
   })
     .then(({ data }) => {
+      console.log(data)
       history.push('/');
       setLoading(false);
     })
@@ -73,16 +75,19 @@ export function saveEditAsync({ url, setLoading, history, payload }) {
     })
 }
 
-export function deleteLecturerAsync(urlDel) {
-  axios({
-    url: urlDel,
-    method: 'DELETE',
-    headers: { access_token: localStorage.access_token }
-  })
-    .then(({ data }) => {
-      console.log(data)
+export function deleteLecturerAsync({ urlDel, url, setLoading }) {
+  return (dispatch) => {
+    axios({
+      url: urlDel,
+      method: 'DELETE',
+      headers: { access_token: localStorage.access_token }
     })
-    .catch(err => {
-      console.log(err);
-    })
+      .then(({ data }) => {
+        dispatch(setLecturersAsync({ url, setLoading }))
+        console.log(data)
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
 }
