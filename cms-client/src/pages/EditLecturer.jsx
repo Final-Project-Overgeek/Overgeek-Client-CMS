@@ -6,63 +6,67 @@ import Loading from '../components/Loading';
 import { setLecturerAsync, saveEditAsync } from '../store/actions/lecturerAction';
 
 export default function EditLecturer() {
-  const lecturer = useSelector((state) => state.lecturerReducer.lecturer);
   const dispatch = useDispatch();
   const history = useHistory();
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const url = baseUrl + '/lecturers/' + id;
-  const [name, setName] = useState(lecturer[0].name);
-  const [profile, setProfile] = useState(lecturer[0].profile);
-  const [game, setGame] = useState(lecturer[0].game);
-  const [role, setRole] = useState(lecturer[0].role);
-  const [team, setTeam] = useState(lecturer[0].team);
-  const [language, setLanguage] = useState(lecturer[0].language);
-  const [image, setImage] = useState(lecturer[0].image);
+  const lecturer = useSelector((state) => state.lecturerReducer.lecturer);
+  const [lecturerData, setLecturerData] = useState({
+    name: '',
+    profile: '',
+    game: '',
+    role: '',
+    team: '',
+    language: '',
+    image: ''
+  });
 
-  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    dispatch(setLecturerAsync({ url, setLoading }));
 
-  function getName(event) {
-    setName(event.target.value);
-  }
+    if (lecturer.length) {
+      setLecturerData({
+        name: lecturer ? lecturer[0].name : '',
+        profile: lecturer ? lecturer[0].profile : '',
+        game: lecturer ? lecturer[0].game : '',
+        role: lecturer ? lecturer[0].role : '',
+        team: lecturer ? lecturer[0].team : '',
+        language: lecturer ? lecturer[0].language : '',
+        image: lecturer ? lecturer[0].image : ''
+      })
+    }
+  }, [loading]);
 
-  function getProfile(event) {
-    setProfile(event.target.value);
-  }
-
-  function getGame(event) {
-    setGame(event.target.value);
-  }
-
-  function getRole(event) {
-    setRole(event.target.value);
-  }
-
-  function getLanguage(event) {
-    setLanguage(event.target.value);
-  }
-
-  function getTeam(event) {
-    setTeam(event.target.value);
-  }
-
-  function getImage(event) {
-    setImage(event.target.value);
-  }
 
   function cancel(event) {
     event.preventDefault();
     history.push('/');
   }
 
-  function saveEdit(event) {
-    event.preventDefault();
-    let payload = { name, profile, game, role, language, team, image };
-    saveEditAsync({ url, history, payload, setLoading });
+  function handleOnChange(event) {
+    if (event.target.id === 'name') {
+      setLecturerData({ ...lecturerData, name: event.target.value });
+    } else if (event.target.id === 'profile') {
+      setLecturerData({ ...lecturerData, profile: event.target.value });
+    } else if (event.target.id === 'game') {
+      setLecturerData({ ...lecturerData, game: event.target.value });
+    } else if (event.target.id === 'role') {
+      setLecturerData({ ...lecturerData, role: event.target.value });
+    } else if (event.target.id === 'team') {
+      setLecturerData({ ...lecturerData, team: event.target.value });
+    } else if (event.target.id === 'language') {
+      setLecturerData({ ...lecturerData, language: event.target.value });
+    } else if (event.target.id === 'image') {
+      setLecturerData({ ...lecturerData, image: event.target.value });
+    }
   }
 
-  useEffect(() => {
-    dispatch(setLecturerAsync({ url, setLoading }))
-  }, []);
+  function saveEdit(event) {
+    event.preventDefault();
+    let payload = lecturerData;
+    saveEditAsync({ url, history, payload, setLoading });
+  }
 
   return (
     <div className='container'>
@@ -71,31 +75,31 @@ export default function EditLecturer() {
         <form>
           <div className="mb-3">
             <label for="add" className="form-label ml-2">Name</label>
-            <input type="text" className="form-control" id="add" value={name} onChange={getName} />
+            <input type="text" className="form-control" id="name" value={lecturerData.name} onChange={handleOnChange} />
           </div>
           <div className="mb-3">
             <label for="add" className="form-label ml-2">Profile</label>
-            <textarea type="text" className="form-control" id="add" value={profile} onChange={getProfile} />
+            <textarea type="text" className="form-control" id="profile" value={lecturerData.profile} onChange={handleOnChange} />
           </div>
           <div className="mb-3">
             <label for="add" className="form-label ml-2">Game</label>
-            <input type="text" className="form-control" id="add" value={game} onChange={getGame} />
+            <input type="text" className="form-control" id="game" value={lecturerData.game} onChange={handleOnChange} />
           </div>
           <div className="mb-3">
             <label for="add" className="form-label ml-2">Role</label>
-            <input type="text" className="form-control" id="add" value={role} onChange={getRole} />
+            <input type="text" className="form-control" id="role" value={lecturerData.role} onChange={handleOnChange} />
           </div>
           <div className="mb-3">
             <label for="add" className="form-label ml-2">Team</label>
-            <input type="text" className="form-control" id="add" value={team} onChange={getTeam} />
+            <input type="text" className="form-control" id="team" value={lecturerData.team} onChange={handleOnChange} />
           </div>
           <div className="mb-3">
             <label for="add" className="form-label ml-2">Language</label>
-            <input type="text" className="form-control" id="add" value={language} onChange={getLanguage} />
+            <input type="text" className="form-control" id="language" value={lecturerData.language} onChange={handleOnChange} />
           </div>
           <div className="mb-3">
             <label for="add" className="form-label ml-2">Image</label>
-            <input type="text" className="form-control" id="add" value={image} onChange={getImage} />
+            <input type="text" className="form-control" id="image" value={lecturerData.image} onChange={handleOnChange} />
           </div>
           <div className="card">
             <div className="card-header">
@@ -132,3 +136,5 @@ export default function EditLecturer() {
     </div>
   )
 }
+
+// (event) => { setLecturerData(event.target.value) }

@@ -9,7 +9,7 @@ export default function Home() {
   const history = useHistory();
   const dispatch = useDispatch();
   const lecturers = useSelector((state) => state.lecturerReducer.lecturers);
-  const url = baseUrl + '/lecturers';
+  const url = baseUrl + '/lecturers/all';
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,8 +28,7 @@ export default function Home() {
     let urlDel = baseUrl + '/lecturers/' + id;
 
     event.preventDefault();
-    deleteLecturerAsync(urlDel);
-    dispatch(setLecturersAsync({ url, setLoading }));
+    dispatch(deleteLecturerAsync({ urlDel, url, setLoading }));
   }
 
   return (
@@ -61,8 +60,8 @@ export default function Home() {
                   <td>{lecturer.language}</td>
                   <td>{lecturer.videos.length} pcs</td>
                   <td>
-                    <a href="#" className='btn btn-primary mr-2' onClick={(event) => { edit({ event, id: lecturer.id }) }}>Edit</a>
-                    <a href="#" className='btn btn-danger' onClick={(event) => { deleteLecturer({ event, id: lecturer.id }) }}>Delete</a>
+                    <a href="#" className='btn form-control btn-primary mb-1' onClick={(event) => { edit({ event, id: lecturer.id }) }}>Edit</a>
+                    <a href="#" className='btn form-control btn-danger' onClick={(event) => { deleteLecturer({ event, id: lecturer.id }) }}>Delete</a>
                   </td>
                 </tr>
               )
