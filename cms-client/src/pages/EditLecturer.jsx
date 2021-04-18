@@ -21,6 +21,12 @@ export default function EditLecturer() {
     language: '',
     image: ''
   });
+  const games = [
+    "PlayerUnknown's Battlegrounds Mobile",
+    "League of Legends: Wild Rift",
+    "Free Fire Battlegrounds",
+    "Mobile Legends"
+  ]
 
   useEffect(() => {
     dispatch(setLecturerAsync({ url, setLoading }));
@@ -83,7 +89,16 @@ export default function EditLecturer() {
           </div>
           <div className="mb-3">
             <label for="add" className="form-label ml-2">Game</label>
-            <input type="text" className="form-control" id="game" value={lecturerData.game} onChange={handleOnChange} />
+            <select class="form-select form-control" aria-label="Default select example" id="game" onChange={handleOnChange}>
+              <option selected value={lecturerData.game} >{lecturerData.game}</option>
+              {games.map((game, i) => {
+                if (game != lecturerData.game) {
+                  return (
+                    <option value={game} key={i}>{game}</option>
+                  )
+                }
+              })}
+            </select>
           </div>
           <div className="mb-3">
             <label for="add" className="form-label ml-2">Role</label>
