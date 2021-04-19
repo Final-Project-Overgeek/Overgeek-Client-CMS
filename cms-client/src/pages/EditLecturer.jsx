@@ -72,8 +72,6 @@ export default function EditLecturer() {
   async function saveEdit(event) {
     event.preventDefault();
     payload = lecturerData;
-
-    // dispatch(saveEditAsync({ url, history, payload, setLoading }));
     saveEditAsync({ url, history, payload, setLoading });
   }
 
@@ -82,7 +80,7 @@ export default function EditLecturer() {
 
     event.preventDefault();
     setEditLecturer(payload);
-    history.push('/upload-videos');
+    history.push('/upload-videos/' + id);
   }
 
   return (

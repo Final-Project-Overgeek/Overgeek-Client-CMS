@@ -23,7 +23,7 @@ function App() {
             <Navbar />
             <EditLecturer />
           </Route>
-          <Route path='/upload-videos'>
+          <Route path='/upload-videos/:id'>
             <UploadVideo />
           </Route>
           <Route path='/add-lecturer'>

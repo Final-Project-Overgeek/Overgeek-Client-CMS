@@ -7,7 +7,6 @@ const initialState = {
 
 function lecturerReducer(state = initialState, actions) {
   const { type, payload } = actions;
-  // console.log(payload, '--------- masuk reducer')
 
   if (type === 'lecturers/setLecturers') {
     return { ...state, lecturers: payload };
