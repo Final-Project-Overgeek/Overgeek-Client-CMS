@@ -2,8 +2,21 @@ import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { uploadVideoAsync, saveVideoDetailAsync } from '../store/actions/videoUpload';
 import baseUrl from '../api';
+import axios from 'axios';
+
+async function postImage({image, description}) {
+  const formData = new FormData();
+  formData.append("image", image)
+  formData.append("description", description)
+
+  const result = await axios.post(`${baseUrl}/upload/uploadImages`, formData, { headers: {'Content-Type': 'multipart/form-data'}})
+  return result.data
+}
 
 export default function UploadVideo() {
+  const [file, setFile] = useState()
+  // const [description, setDescription] = useState("")
+  const [images, setImages] = useState([])
   const [uploadVideo, setUploadVideo] = useState(null);
   const url = baseUrl + '/upload/uploadImages';
   const [videoData, setVideoData] = useState({
@@ -38,6 +51,18 @@ export default function UploadVideo() {
   function saveVideoDetail(event) {
     event.preventDefault();
     setIsClick(true);
+  }
+  const submit = async event => {
+    event.preventDefault()
+    const result = await postImage({image: file})
+    setImages([result.image, ...images])
+  }
+
+
+
+  const fileSelected = event => {
+    const file = event.target.files[0]
+    setFile(file)
   }
 
   return (
@@ -79,10 +104,10 @@ export default function UploadVideo() {
           </div>
         </div>
       </div>
-      <h1>ada</h1>
-      <img src="/data/33f5109699baa39755febed8f55684c9" alt='img1' ></img>
-      {/* <img src="file://data/9851bf51bae1072a66a7dde2655d3d51" alt="2ada" /> */}
-      <video src="/data/f5c70c9a28b3b6e9d4077002a9c5165e" controls></video>
+        
+        <video src="/data/93e639109e5eb457e774c72b0f42562a" controls></video>
+      <img src="data/9851bf51bae1072a66a7dde2655d3d51" alt="2ada" />
+      
     </>
   )
 }
