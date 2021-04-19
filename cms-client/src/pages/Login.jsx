@@ -20,6 +20,7 @@ export default function Login() {
 
   function login(event) {
     event.preventDefault();
+    console.log(payload, '------------')
     loginAsync({ url, history, payload });
   }
 

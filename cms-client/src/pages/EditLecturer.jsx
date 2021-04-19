@@ -3,7 +3,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import baseUrl from '../api';
 import Loading from '../components/Loading';
-import { setLecturerAsync, saveEditAsync } from '../store/actions/lecturerAction';
+import { setLecturerAsync, saveEditAsync, setEditLecturer } from '../store/actions/lecturerAction';
 
 export default function EditLecturer() {
   const dispatch = useDispatch();
@@ -26,7 +26,8 @@ export default function EditLecturer() {
     "League of Legends: Wild Rift",
     "Free Fire Battlegrounds",
     "Mobile Legends"
-  ]
+  ];
+  let payload = {};
 
   useEffect(() => {
     dispatch(setLecturerAsync({ url, setLoading }));
@@ -68,10 +69,20 @@ export default function EditLecturer() {
     }
   }
 
-  function saveEdit(event) {
+  async function saveEdit(event) {
     event.preventDefault();
-    let payload = lecturerData;
+    payload = lecturerData;
+
+    // dispatch(saveEditAsync({ url, history, payload, setLoading }));
     saveEditAsync({ url, history, payload, setLoading });
+  }
+
+  function toUploadVideo(event) {
+    payload = lecturerData;
+
+    event.preventDefault();
+    setEditLecturer(payload);
+    history.push('/upload-videos');
   }
 
   return (
@@ -120,7 +131,7 @@ export default function EditLecturer() {
             <div className="card-header">
               <label for="add" className="form-label">Add Videos</label>
             </div>
-            <div className="card-body">
+            {/* <div className="card-body">
               <div className="mb-3">
                 <label for="add" className="form-label ml-2">Title</label>
                 <input type="text" className="form-control" id="add" />
@@ -141,10 +152,10 @@ export default function EditLecturer() {
                   <option value="false">Paid</option>
                 </select>
               </div>
-            </div>
-            <a href="#" className='btn badge-success mb-3 ml-5 mr-5'>Add More Video</a>
+            </div> */}
+            <a href="#" className='btn badge-success mb-3 ml-5 mr-5' onClick={(event) => { toUploadVideo(event) }}>Add Videos</a>
           </div>
-          <button type="submit" className="btn btn-primary form-control mb-2 mt-3" onClick={(event) => { saveEdit(event) }}>Submit</button>
+          <button type="submit" className="btn btn-primary form-control mb-2 mt-3" onClick={(event) => { saveEdit(event) }}>Edit without Video</button>
           <button type="submit" className="btn btn-danger form-control mb-5" onClick={(event) => { cancel(event) }}>Cancel</button>
         </form>
       }

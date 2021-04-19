@@ -9,7 +9,8 @@ import {
   Home,
   Login,
   AddLecturer,
-  EditLecturer
+  EditLecturer,
+  UploadVideo
 } from './pages';
 import Navbar from './components/Navbar';
 
@@ -19,22 +20,22 @@ function App() {
       <div className="App">
         <Switch>
           <Route path='/edit-lecturer/:id'>
-            <Navbar/>
-            <EditLecturer/>
+            <Navbar />
+            <EditLecturer />
           </Route>
-          <Route path='/detail-lecturer/:id'>
-            {/* detail */}
+          <Route path='/upload-videos'>
+            <UploadVideo />
           </Route>
           <Route path='/add-lecturer'>
-            <Navbar/>
-            <AddLecturer/>
+            <Navbar />
+            <AddLecturer />
           </Route>
           <Route path='/login'>
-            <Login/>
+            <Login />
           </Route>
           <Route path='/'>
-            <Navbar/>
-            <Home/>
+            <Navbar />
+            <Home />
           </Route>
         </Switch>
       </div>
