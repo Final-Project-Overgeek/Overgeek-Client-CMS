@@ -9,7 +9,7 @@ export default function Home() {
   const history = useHistory();
   const dispatch = useDispatch();
   const lecturers = useSelector((state) => state.lecturerReducer.lecturers);
-  const url = baseUrl + '/lecturers/all';
+  const url = baseUrl + '/lecturers';
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

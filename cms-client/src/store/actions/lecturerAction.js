@@ -58,21 +58,44 @@ export function addLecturerAsync({ url, history, payload }) {
     })
 }
 
+export function setEditLecturer(payload){
+  return { type: 'editLecturer/setEditLecturer', payload};
+}
+
 export function saveEditAsync({ url, setLoading, history, payload }) {
   axios({
-    url: url,
-    method: 'PUT',
-    data: payload,
-    headers: { access_token: localStorage.access_token }
-  })
-    .then(({ data }) => {
-      console.log(data)
-      history.push('/');
-      setLoading(false);
+      url: url,
+      method: 'PUT',
+      data: payload,
+      headers: { access_token: localStorage.access_token }
     })
-    .catch(err => {
-      console.log(err);
-    })
+      .then(({ data }) => {
+        // console.log(data, '=======')
+        // dispatch(setEditLecturer(data));
+        history.push('/');
+        setLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  // return ((dispatch) => {
+  //   console.log(payload)
+  //   axios({
+  //     url: url,
+  //     method: 'PUT',
+  //     data: payload,
+  //     headers: { access_token: localStorage.access_token }
+  //   })
+  //     .then(({ data }) => {
+  //       console.log(data)
+  //       dispatch(setEditLecturer(data));
+  //       history.push('/');
+  //       setLoading(false);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     })
+  // })
 }
 
 export function deleteLecturerAsync({ urlDel, url, setLoading }) {
