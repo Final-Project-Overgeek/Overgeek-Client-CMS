@@ -2,22 +2,27 @@ import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { uploadVideoAsync, saveVideoDetailAsync } from '../store/actions/videoUpload';
 import baseUrl from '../api';
-import axios from 'axios';
+import { useParams, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+// import axios from 'axios';
 
-async function postImage({image, description}) {
-  const formData = new FormData();
-  formData.append("image", image)
-  formData.append("description", description)
+// async function postImage({ image, description }) {
+//   const formData = new FormData();
+//   formData.append("image", image)
+//   formData.append("description", description)
 
-  const result = await axios.post(`${baseUrl}/upload/uploadImages`, formData, { headers: {'Content-Type': 'multipart/form-data'}})
-  return result.data
-}
+//   const result = await axios.post(`${baseUrl}/upload/uploadImages`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+//   return result.data
+// }
 
 export default function UploadVideo() {
-  const [file, setFile] = useState()
+  // const [file, setFile] = useState()
   // const [description, setDescription] = useState("")
-  const [images, setImages] = useState([])
-  const [uploadVideo, setUploadVideo] = useState(null);
+  // const [images, setImages] = useState([])
+  // const [uploadVideo, setUploadVideo] = useState(null);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { id } = useParams();
   const url = baseUrl + '/upload/uploadImages';
   const [videoData, setVideoData] = useState({
     title: '',
@@ -25,6 +30,7 @@ export default function UploadVideo() {
     isFree: ''
   });
   const [isClick, setIsClick] = useState(true);
+  const awsVideo = useSelector((state) => state.awsVideoReducer.awsVideo);
   let payload = {};
 
   function handleOnChange(event) {
@@ -42,28 +48,36 @@ export default function UploadVideo() {
     setIsClick(false);
 
     let fd = new FormData();
-    fd.append('video', video);
+    fd.append('image', video); // ==============>>>>>>>>>> SEMENTARA PAKEK IMAGE UNTUK MENGHINDARI CLOUD FULL
     payload = fd;
 
-    uploadVideoAsync({ url, payload });
+    dispatch(uploadVideoAsync({ url, payload }));
   }
 
   function saveVideoDetail(event) {
+    let urlSaveVideo = baseUrl + '/courses/' + id;
     event.preventDefault();
-    setIsClick(true);
-  }
-  const submit = async event => {
-    event.preventDefault()
-    const result = await postImage({image: file})
-    setImages([result.image, ...images])
+    payload = {
+      title: videoData.title,
+      thumbnail: videoData.thumbnail,
+      isFree: videoData.isFree,
+      url: awsVideo
+      // url: awsVideo.data.awsVideo
+    };
+
+    saveVideoDetailAsync({ urlSaveVideo, payload, history });
   }
 
+  // const submit = async event => {
+  //   event.preventDefault()
+  //   const result = await postImage({ image: file })
+  //   setImages([result.image, ...images])
+  // }
 
-
-  const fileSelected = event => {
-    const file = event.target.files[0]
-    setFile(file)
-  }
+  // const fileSelected = event => {
+  //   const file = event.target.files[0]
+  //   setFile(file)
+  // }
 
   return (
     <>
@@ -79,8 +93,7 @@ export default function UploadVideo() {
               <input type="file" class="custom-file-input" id="customFile" onChange={(event) => { getVideos({ event, video: event.target.files[0] }) }} />
               <label class="custom-file-label" for="customFile" >Choose file</label>
             </div>
-            {isClick ? <a href="#" className='btn btn-primary form-control mt-3' onClick={(event) => { getVideos(event) }}>Get Video</a> : null}
-            {isClick ? null :
+            {false ? null :
               <>
                 <div className="mb-3 mt-3">
                   <label for="add" className="form-label ml-2">Title</label>
@@ -104,10 +117,8 @@ export default function UploadVideo() {
           </div>
         </div>
       </div>
-        
-        <video src="/data/93e639109e5eb457e774c72b0f42562a" controls></video>
-      <img src="data/9851bf51bae1072a66a7dde2655d3d51" alt="2ada" />
-      
+      {/* <img src="/upload/data/1f9ae6aa18c0038220e2bf5ff143c957" alt="2ada" /> */}
+
     </>
   )
 }
