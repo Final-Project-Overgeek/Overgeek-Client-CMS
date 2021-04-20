@@ -10,7 +10,9 @@ import {
   Login,
   AddLecturer,
   EditLecturer,
-  UploadVideo
+  UploadVideo,
+  VideoTable,
+  EditVideo
 } from './pages';
 import Navbar from './components/Navbar';
 
@@ -19,6 +21,14 @@ function App() {
     <Router>
       <div className="App">
         <Switch>
+          <Route path='/edit-video/:lecturerId/:videoId'>
+            <Navbar />
+            <EditVideo />
+          </Route>
+          <Route path='/video-table/:id'>
+            <Navbar />
+            <VideoTable />
+          </Route>
           <Route path='/edit-lecturer/:id'>
             <Navbar />
             <EditLecturer />

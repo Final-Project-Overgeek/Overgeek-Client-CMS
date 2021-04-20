@@ -83,6 +83,12 @@ export default function EditLecturer() {
     history.push('/upload-videos/' + id);
   }
 
+  function toVideoTable(event) {
+    event.preventDefault();
+
+    history.push('/video-table/' + id);
+  }
+
   return (
     <div className='container'>
       <p className='h2 mt-3 mb-3 text-center'>Edit Lecturer</p>
@@ -127,33 +133,18 @@ export default function EditLecturer() {
           </div>
           <div className="card">
             <div className="card-header">
-              <label for="add" className="form-label">Add Videos</label>
+              <label for="add" className="form-label">Video Amount : <span>
+                <a href="#" onClick={(event) => { toVideoTable(event) }}>
+                  {lecturer[0].videos.length} pcs
+                </a>
+              </span></label>
+              {/* <b>
+                {JSON.stringify(lecturer[0].videos)}
+              </b> */}
             </div>
-            {/* <div className="card-body">
-              <div className="mb-3">
-                <label for="add" className="form-label ml-2">Title</label>
-                <input type="text" className="form-control" id="add" />
-              </div>
-              <div className="mb-3">
-                <label for="add" className="form-label ml-2">Url</label>
-                <input type="text" className="form-control" id="add" />
-              </div>
-              <div className="mb-3">
-                <label for="add" className="form-label ml-2">Thumbnail</label>
-                <input type="text" className="form-control" id="add" />
-              </div>
-              <div className="mb-3">
-                <label for="add" className="form-label ml-2 mt-0">Status</label>
-                <select className="form-select form-control" aria-label="Default select example">
-                  <option selected>--- Select One ---</option>
-                  <option value="true">Free</option>
-                  <option value="false">Paid</option>
-                </select>
-              </div>
-            </div> */}
-            <a href="#" className='btn badge-success mb-3 ml-5 mr-5' onClick={(event) => { toUploadVideo(event) }}>Add Videos</a>
+            <a href="#" className='btn badge-success mb-3 mt-3 ml-5 mr-5' onClick={(event) => { toUploadVideo(event) }}>Add Videos</a>
           </div>
-          <button type="submit" className="btn btn-primary form-control mb-2 mt-3" onClick={(event) => { saveEdit(event) }}>Edit without Video</button>
+          <button type="submit" className="btn btn-primary form-control mb-2 mt-3" onClick={(event) => { saveEdit(event) }}>Edit</button>
           <button type="submit" className="btn btn-danger form-control mb-5" onClick={(event) => { cancel(event) }}>Cancel</button>
         </form>
       }
