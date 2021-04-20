@@ -17,7 +17,7 @@ export default function EditVideo() {
     thumbnail: '',
     url: ''
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const video = useSelector((state) => state.videoReducer.video);
   const isFreeSelect = ['true', 'false'];
   let payload = {};
@@ -69,7 +69,6 @@ export default function EditVideo() {
     let fd = new FormData();
     fd.append('image', thumbnail);
     payload = fd;
-    console.log(thumbnail)
     dispatch(uploadThumbnailAsync({ urlUploadThumbnail, payload, setLoading }));
   }
 
@@ -78,7 +77,7 @@ export default function EditVideo() {
     payload = {
       title: videoEdit.title,
       // thumbnail: 'awsThumbnail.data.awsImage',
-      thumbnail: awsThumbnail.data.awsImage,
+      thumbnail: awsThumbnail,
       isFree: videoEdit.isFree,
       // url: 'awsVideo.data.awsVideo'
       url: awsVideo
@@ -94,38 +93,39 @@ export default function EditVideo() {
   return (
     <div className='container'>
       <h3 className='mt-3 text-center'>Edit Videos</h3>
-      <div className="card mt-3">
-        <div className="card-header">
-          <label for="add" className="form-label">{video.title}</label>
-        </div>
-        <div className="card-body">
-          <label for="add" className="form-label ml-2">Video</label>
-          <div class="custom-file mt-1">
-            <input type="file" class="custom-file-input" id="url" onChange={(event) => { getVideos({ event, video: event.target.files[0] }) }} />
-            <label class="custom-file-label" for="customFile" >{videoEdit.url}</label>
+      {loading ? <Loading /> :
+        <div className="card mt-3">
+          <div className="card-header">
+            <label for="add" className="form-label">{video.title}</label>
           </div>
-          {!awsVideo ? null :
-            <>
-              <label for="add" className="form-label ml-2 mt-3">Thumbnail</label>
-              <div class="custom-file mt-1">
-                <input type="file" class="custom-file-input" id="thumbnail" onChange={(event) => { getThumbnail({ event, thumbnail: event.target.files[0] }) }} />
-                <label class="custom-file-label" for="customFile" >{videoEdit.thumbnail}</label>
-              </div>
-            </>
-          }
-          {!awsThumbnail ? null :
-            <>
-              <div className="mb-3 mt-3">
-                <label for="add" className="form-label ml-2">Title</label>
-                <input type="text" className="form-control" id="title" value={videoEdit.title} onChange={handleOnChange} />
-              </div>
-              <div className="mb-3">
-                <label for="add" className="form-label ml-2 mt-0">Is Free?</label>
-                <select className="form-select form-control" aria-label="Default select example" id="isFree" onChange={handleOnChange}>
-                  {videoEdit.isFree ? <option selected>Yes</option> : <option selected>No</option>}
-                  <option value="true">Yes</option>
-                  <option value="false">No</option>
-                  {/* {isFreeSelect.map((e, i) => {
+          <div className="card-body">
+            <label for="add" className="form-label ml-2">Video</label>
+            <div class="custom-file mt-1">
+              <input type="file" class="custom-file-input" id="url" onChange={(event) => { getVideos({ event, video: event.target.files[0] }) }} />
+              <label class="custom-file-label" for="customFile" >{videoEdit.url}</label>
+            </div>
+            {!awsVideo ? null :
+              <>
+                <label for="add" className="form-label ml-2 mt-3">Thumbnail</label>
+                <div class="custom-file mt-1">
+                  <input type="file" class="custom-file-input" id="thumbnail" onChange={(event) => { getThumbnail({ event, thumbnail: event.target.files[0] }) }} />
+                  <label class="custom-file-label" for="customFile" >{videoEdit.thumbnail}</label>
+                </div>
+              </>
+            }
+            {!awsThumbnail ? null :
+              <>
+                <div className="mb-3 mt-3">
+                  <label for="add" className="form-label ml-2">Title</label>
+                  <input type="text" className="form-control" id="title" value={videoEdit.title} onChange={handleOnChange} />
+                </div>
+                <div className="mb-3">
+                  <label for="add" className="form-label ml-2 mt-0">Is Free?</label>
+                  <select className="form-select form-control" aria-label="Default select example" id="isFree" onChange={handleOnChange}>
+                    {videoEdit.isFree ? <option selected value="true">Yes</option> : <option selected value="false">No</option>}
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                    {/* {isFreeSelect.map((e, i) => {
                     <b>{JSON.stringify(e)}</b>
                     if (e != videoEdit.isFree || e == 'Yes') {
                       <option value="true">Yes</option>
@@ -133,14 +133,15 @@ export default function EditVideo() {
                       <option value="false">No</option>
                     }
                   })} */}
-                </select>
-              </div>
-              <a href="#" className='btn btn-primary form-control mt-3' onClick={(event) => { saveEditVideo(event) }}>Edit</a>
-              <a href="#" className='btn btn-danger form-control mt-2' onClick={(event) => { changePage(event) }}>Cancel</a>
-            </>
-          }
+                  </select>
+                </div>
+                <a href="#" className='btn btn-primary form-control mt-3' onClick={(event) => { saveEditVideo(event) }}>Edit</a>
+                <a href="#" className='btn btn-danger form-control mt-2' onClick={(event) => { changePage(event) }}>Cancel</a>
+              </>
+            }
+          </div>
         </div>
-      </div>
+      }
     </div>
   )
 }
