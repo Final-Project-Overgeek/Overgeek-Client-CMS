@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { setAwsVideo, setAwsThumbnail } from './awsVideoAction';
 
 export function setVideo(payload) {
   return { type: 'video/setVideo', payload };
@@ -12,7 +13,10 @@ export function videoEditAsync({ url, setLoading }) {
       headers: { access_token: localStorage.access_token }
     })
       .then(({ data }) => {
+        console.log(data)
         dispatch(setVideo(data));
+        dispatch(setAwsVideo(data.url));
+        dispatch(setAwsThumbnail(data.thumbnail));
         setLoading(false);
       })
       .catch(err => {

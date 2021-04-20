@@ -74,11 +74,11 @@ export default function UploadVideo() {
     event.preventDefault();
     payload = {
       title: videoData.title,
-      thumbnail: awsThumbnail.data.awsImage,
+      thumbnail: awsThumbnail,
       // thumbnail: awsThumbnail.data.awsImage,
       isFree: videoData.isFree,
       // url: awsVideo
-      url: awsVideo.data.awsVideo
+      url: awsVideo
     };
 
     saveVideoDetailAsync({ urlSaveVideo, payload, history });

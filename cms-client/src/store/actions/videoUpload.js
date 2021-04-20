@@ -9,8 +9,8 @@ export function uploadVideoAsync({ url, payload, setLoading }) {
       }
     })
       .then(data => {
-        alert('success', data.data.awsVideo);
-        dispatch(setAwsVideo(data));
+        alert('Upload Video Success', data.data.awsVideo);
+        dispatch(setAwsVideo(data.data.awsVideo));
         setLoading(false);
       })
       .catch(err => {
@@ -28,7 +28,7 @@ export function uploadThumbnailAsync({ urlUploadThumbnail, payload, setLoading }
     })
       .then(data => {
         alert('Thumbnail successfully to upload')
-        dispatch(setAwsThumbnail(data));
+        dispatch(setAwsThumbnail(data.data.awsImage));
         setLoading(false);
         console.log(data)
       })
