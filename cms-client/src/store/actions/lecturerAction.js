@@ -1,3 +1,4 @@
+import swal from 'sweetalert';
 import axios from 'axios';
 
 export function setLecturers(payload) {
@@ -50,7 +51,12 @@ export function addLecturerAsync({ url, history, payload }) {
     headers: { access_token: localStorage.access_token }
   })
     .then(({ data }) => {
-      console.log(data)
+      swal({
+        title: "Good job!",
+        text: `${data.name} successfully to created!`,
+        icon: "success",
+        button: "OK",
+      });
       history.push('/');
     })
     .catch(err => {
@@ -58,59 +64,60 @@ export function addLecturerAsync({ url, history, payload }) {
     })
 }
 
-export function setEditLecturer(payload){
-  return { type: 'editLecturer/setEditLecturer', payload};
+export function setEditLecturer(payload) {
+  return { type: 'editLecturer/setEditLecturer', payload };
 }
 
 export function saveEditAsync({ url, setLoading, history, payload }) {
   axios({
-      url: url,
-      method: 'PUT',
-      data: payload,
-      headers: { access_token: localStorage.access_token }
+    url: url,
+    method: 'PUT',
+    data: payload,
+    headers: { access_token: localStorage.access_token }
+  })
+    .then(({ data }) => {
+      swal({
+        title: "Good job!",
+        text: `Edit ${data[1][0].name} completed!`,
+        icon: "success",
+        button: "OK",
+      });
+      history.push('/');
+      setLoading(false);
     })
-      .then(({ data }) => {
-        // console.log(data, '=======')
-        // dispatch(setEditLecturer(data));
-        history.push('/');
-        setLoading(false);
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  // return ((dispatch) => {
-  //   console.log(payload)
-  //   axios({
-  //     url: url,
-  //     method: 'PUT',
-  //     data: payload,
-  //     headers: { access_token: localStorage.access_token }
-  //   })
-  //     .then(({ data }) => {
-  //       console.log(data)
-  //       dispatch(setEditLecturer(data));
-  //       history.push('/');
-  //       setLoading(false);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     })
-  // })
+    .catch(err => {
+      console.log(err);
+    })
 }
 
 export function deleteLecturerAsync({ urlDel, url, setLoading }) {
   return (dispatch) => {
-    axios({
-      url: urlDel,
-      method: 'DELETE',
-      headers: { access_token: localStorage.access_token }
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
     })
-      .then(({ data }) => {
-        dispatch(setLecturersAsync({ url, setLoading }))
-        console.log(data)
-      })
-      .catch(err => {
-        console.log(err);
-      })
+      .then((willDelete) => {
+        if (willDelete) {
+          axios({
+            url: urlDel,
+            method: 'DELETE',
+            headers: { access_token: localStorage.access_token }
+          })
+            .then(({ data }) => {
+              dispatch(setLecturersAsync({ url, setLoading }))
+              swal(data.msg, {
+                icon: "success",
+              })
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else {
+          swal("Your imaginary file is safe!");
+        }
+      });
   }
 }

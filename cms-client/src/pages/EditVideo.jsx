@@ -24,18 +24,19 @@ export default function EditVideo() {
   const awsVideo = useSelector((state) => state.awsVideoReducer.awsVideo);
   const awsThumbnail = useSelector((state) => state.awsVideoReducer.awsThumbnail);
 
+  console.log(awsThumbnail, 'before ================')
+
   useEffect(() => {
     dispatch(videoEditAsync({ url, setLoading }));
-
     if (video) {
       setVideoEdit({
-        title: video ? video.title : '',
-        isFree: video ? video.isFree : '',
-        thumbnail: video ? video.thumbnail : '',
-        url: video ? video.url : ''
+        title: video.url === awsVideo ? video.title : '',
+        isFree: video.url === awsVideo ? video.isFree : '',
+        thumbnail: video.url === awsVideo ? video.thumbnail : '',
+        url: video.url === awsVideo ? video.url : ''
       })
     }
-  }, [loading]);
+  }, [loading, video]);
 
   function handleOnChange(event) {
     if (event.target.id === 'title') {
@@ -74,6 +75,7 @@ export default function EditVideo() {
 
   function saveEditVideo(event) {
     event.preventDefault();
+    console.log(awsThumbnail, 'after <<<<<<<<<<<<<<<<<')
     payload = {
       title: videoEdit.title,
       // thumbnail: 'awsThumbnail.data.awsImage',

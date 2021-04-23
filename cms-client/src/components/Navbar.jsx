@@ -1,4 +1,5 @@
 import React from 'react';
+import swal from 'sweetalert';
 import { useHistory } from 'react-router-dom';
 
 export default function Navbar() {
@@ -15,6 +16,12 @@ export default function Navbar() {
     event.preventDefault();
     localStorage.removeItem('access_token');
     history.push('/login');
+    swal({
+      title: "Thank You",
+      text: "Have a nice day!",
+      icon: "success",
+      button: "Aww yiss!",
+    });
   }
   return (
     <nav className="navbar navbar-expand-lg shadow navbar-dark bg-dark">

@@ -42,7 +42,7 @@ export default function VideoTable() {
               <th scope="col">Title</th>
               <th scope="col">Thumbnail</th>
               <th scope="col">isFree</th>
-              <th scope="col">Actions</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -56,7 +56,7 @@ export default function VideoTable() {
                   </td>
                   {video.isFree ? <td>Yes</td> : <td>No</td>}
                   <td>
-                    <a href="#" className='btn btn-primary form-control mb-1' onClick={(event) => { changePage({ event, id: video.id }) }}>Edit</a>
+                    {/* <a href="#" className='btn btn-primary form-control mb-1' onClick={(event) => { changePage({ event, id: video.id }) }}>Edit</a> */}
                     <a href="#" className='btn btn-danger form-control' onClick={(event) => { deleteVideo({ event, id: video.id }) }}>Delete</a>
                   </td>
                 </tr>
