@@ -65,7 +65,7 @@ export default function VideoTable() {
           </tbody>
         </table>
       }
-      <a href="#" className='btn btn-info form-control' onClick={(event) => { backTo(event) }}>Back</a>
+      <a href="#" className='btn btn-info form-control mb-5' onClick={(event) => { backTo(event) }}>Back</a>
     </div>
   )
 }
