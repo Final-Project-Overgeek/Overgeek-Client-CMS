@@ -9,22 +9,8 @@ import baseUrl from '../api';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../components/Loading';
-// import axios from 'axios';
-
-// async function postImage({ image, description }) {
-//   const formData = new FormData();
-//   formData.append("image", image)
-//   formData.append("description", description)
-
-//   const result = await axios.post(`${baseUrl}/upload/uploadImages`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
-//   return result.data
-// }
 
 export default function UploadVideo() {
-  // const [file, setFile] = useState()
-  // const [description, setDescription] = useState("")
-  // const [images, setImages] = useState([])
-  // const [uploadVideo, setUploadVideo] = useState(null);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -37,6 +23,8 @@ export default function UploadVideo() {
   const awsVideo = useSelector((state) => state.awsVideoReducer.awsVideo);
   const awsThumbnail = useSelector((state) => state.awsVideoReducer.awsThumbnail);
   let payload = {};
+  let thumbnailFileName = '';
+  let videoFileName = '';
 
   function handleOnChange(event) {
     if (event.target.id === 'title') {
@@ -51,7 +39,7 @@ export default function UploadVideo() {
     setLoading(true);
 
     let fd = new FormData();
-    fd.append('video', video); // ==============>>>>>>>>>> SEMENTARA PAKEK IMAGE UNTUK MENGHINDARI CLOUD FULL
+    fd.append('video', video);
     payload = fd;
 
     dispatch(uploadVideoAsync({ url, payload, setLoading }));
@@ -61,11 +49,11 @@ export default function UploadVideo() {
     let urlUploadThumbnail = baseUrl + '/upload/uploadImages';
     event.preventDefault();
     setLoading(true);
+    thumbnailFileName = thumbnail.name;
 
     let fd = new FormData();
     fd.append('image', thumbnail);
     payload = fd;
-    console.log(thumbnail)
     dispatch(uploadThumbnailAsync({ urlUploadThumbnail, payload, setLoading }));
   }
 
@@ -75,9 +63,7 @@ export default function UploadVideo() {
     payload = {
       title: videoData.title,
       thumbnail: awsThumbnail,
-      // thumbnail: awsThumbnail.data.awsImage,
       isFree: videoData.isFree,
-      // url: awsVideo
       url: awsVideo
     };
 
@@ -88,17 +74,6 @@ export default function UploadVideo() {
     event.preventDefault();
     history.push('/edit-lecturer/' + id);
   }
-
-  // const submit = async event => {
-  //   event.preventDefault()
-  //   const result = await postImage({ image: file })
-  //   setImages([result.image, ...images])
-  // }
-
-  // const fileSelected = event => {
-  //   const file = event.target.files[0]
-  //   setFile(file)
-  // }
 
   return (
     <>
@@ -112,16 +87,20 @@ export default function UploadVideo() {
             </div>
             <div className="card-body">
               <label for="add" className="form-label ml-2">Video</label>
-              <div class="custom-file mt-1">
-                <input type="file" class="custom-file-input" id="customFile" onChange={(event) => { getVideos({ event, video: event.target.files[0] }) }} />
-                <label class="custom-file-label" for="customFile" >Choose file</label>
+              <div className="custom-file mt-1">
+                <input type="file" className="custom-file-input" id="customFile" onChange={(event) => { getVideos({ event, video: event.target.files[0] }) }} />
+                {videoFileName ? <label className="custom-file-label" for="customFile" >{videoFileName}</label> :
+                  <label className="custom-file-label" for="customFile" >Choose file</label>
+                }
               </div>
               {!awsVideo ? null :
                 <>
                   <label for="add" className="form-label ml-2 mt-3">Thumbnail</label>
-                  <div class="custom-file mt-1">
-                    <input type="file" class="custom-file-input" id="customFile" onChange={(event) => { getThumbnail({ event, thumbnail: event.target.files[0] }) }} />
-                    <label class="custom-file-label" for="customFile" >Choose file</label>
+                  <div className="custom-file mt-1">
+                    <input type="file" className="custom-file-input" id="customFile" onChange={(event) => { getThumbnail({ event, thumbnail: event.target.files[0] }) }} />
+                    {thumbnailFileName ? <label className="custom-file-label" for="customFile" >{thumbnailFileName}</label> :
+                      <label className="custom-file-label" for="customFile" >Choose file</label>
+                    }
                   </div>
                 </>
               }

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import swal from 'sweetalert';
 import { setAwsVideo, setAwsThumbnail } from './awsVideoAction';
 
 export function setVideo(payload) {
@@ -13,7 +14,6 @@ export function videoEditAsync({ url, setLoading }) {
       headers: { access_token: localStorage.access_token }
     })
       .then(({ data }) => {
-        console.log(data)
         dispatch(setVideo(data));
         dispatch(setAwsVideo(data.url));
         dispatch(setAwsThumbnail(data.thumbnail));
@@ -26,18 +26,33 @@ export function videoEditAsync({ url, setLoading }) {
 }
 
 export function deleteVideoAsync({ urlDel, history, lecturerId }) {
-  axios({
-    url: urlDel,
-    method: 'DELETE',
-    headers: { access_token: localStorage.access_token }
+  swal({
+    title: "Are you sure?",
+    text: "Once deleted, you will not be able to recover this imaginary file!",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
   })
-    .then(({ data }) => {
-      console.log(data)
-      history.push('/edit-lecturer/' + lecturerId);
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    .then((willDelete) => {
+      if (willDelete) {
+        axios({
+          url: urlDel,
+          method: 'DELETE',
+          headers: { access_token: localStorage.access_token }
+        })
+          .then(({ data }) => {
+            swal(data.msg, {
+              icon: "success",
+            });
+            history.push('/edit-lecturer/' + lecturerId);
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      } else {
+        swal("Your imaginary file is safe!");
+      }
+    });
 }
 
 export function editVideoAsync({ url, payload, history }) {
@@ -49,6 +64,12 @@ export function editVideoAsync({ url, payload, history }) {
   })
     .then(({ data }) => {
       history.push('/edit-lecturer/' + data[1][0].LecturerId);
+      swal({
+        title: "Update video completed!",
+        text: "Happy working!",
+        icon: "success",
+        button: "OK",
+      });
     })
     .catch(err => {
       console.log(err);

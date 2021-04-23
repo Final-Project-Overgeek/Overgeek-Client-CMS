@@ -1,3 +1,4 @@
+import swal from 'sweetalert';
 import axios from 'axios';
 import { setAwsVideo, setAwsThumbnail } from './awsVideoAction';
 
@@ -9,9 +10,14 @@ export function uploadVideoAsync({ url, payload, setLoading }) {
       }
     })
       .then(data => {
-        alert('Upload Video Success', data.data.awsVideo);
         dispatch(setAwsVideo(data.data.awsVideo));
         setLoading(false);
+        swal({
+          title: "Upload video completed!",
+          text: "Please continue to filling video form",
+          icon: "success",
+          button: "OK",
+        });
       })
       .catch(err => {
         console.log(err);
@@ -27,10 +33,14 @@ export function uploadThumbnailAsync({ urlUploadThumbnail, payload, setLoading }
       }
     })
       .then(data => {
-        alert('Thumbnail successfully to upload')
         dispatch(setAwsThumbnail(data.data.awsImage));
         setLoading(false);
-        console.log(data)
+        swal({
+          title: "Upload thumbnail completed!",
+          text: "Please continue to filling video form",
+          icon: "success",
+          button: "OK",
+        });
       })
       .catch(err => {
         console.log(err);
@@ -46,8 +56,13 @@ export function saveVideoDetailAsync({ urlSaveVideo, payload, history }) {
     headers: { access_token: localStorage.access_token }
   })
     .then(({ data }) => {
-      console.log(data)
       history.push('/edit-lecturer/' + data.LecturerId);
+      swal({
+        title: "New video data successfully to create",
+        text: "Happy working!",
+        icon: "success",
+        button: "OK",
+      });
     })
     .catch(err => {
       console.log(err);
